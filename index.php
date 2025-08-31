@@ -1,9 +1,16 @@
 <?php
 
+date_default_timezone_set('America/Los_Angeles');
+
+
 if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
     $url = "https://api.coingecko.com/api/v3/simple/price?ids=" . $_GET["crypto"]  . "&vs_currencies=" . $_GET["fiat"];
     $result = file_get_contents($url);
-    $data = file_put_contents("data/price-results.log", $result . "\n", FILE_APPEND);
+
+    $crypto_data = json_decode($result);
+    $crypto_data->timestamp = date("Y-m-d H:i:s");
+
+    $data = file_put_contents("data/price-results.log", json_encode($crypto_data) . "\n", FILE_APPEND);
 }
 
 ?>
@@ -19,13 +26,13 @@ if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
 </head>
 
 <body class="container">
-    <h1>Coingecko Playground</h1>
+    <h1><a href="/" style="color:inherit; text-decoration: none;">Coingecko Playground</a></h1>
 
     <p>
         <a href="search.php">Search API
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-        </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+            </svg>
         </a>
     </p>
 
@@ -62,6 +69,6 @@ if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
         <p><code><?= $result; ?></code></p>
     <?php endif ?>
 
-</body>
+    </body>
 
 </html>
