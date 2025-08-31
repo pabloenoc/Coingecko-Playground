@@ -2,7 +2,7 @@
 
 date_default_timezone_set('America/Los_Angeles');
 
-
+// ex: localhost:8000/?crypto=Bitcoin&fiat=USD
 if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
     $url = "https://api.coingecko.com/api/v3/simple/price?ids=" . $_GET["crypto"]  . "&vs_currencies=" . $_GET["fiat"];
     $result = file_get_contents($url);
@@ -69,6 +69,53 @@ if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
         <p><code><?= $result; ?></code></p>
     <?php endif ?>
 
-    </body>
+    <?php
+    // 1) Read our price-results.log by line
+
+    $searches = [];
+
+    $searches_file_contents = file_get_contents("data/price-results.log");
+    $searches_arr = explode("\n", $searches_file_contents);
+
+    foreach ($searches_arr as $search) {
+        array_push($searches, json_decode($search));
+    }
+
+    foreach ($searches as $search) {
+        foreach ($search as $crypto => $values) {
+            foreach ($values as $fiat => $value) {
+                $table_data[] = [
+                    'crypto' => $crypto,
+                    'fiat' => $fiat,
+                    'value' => $value,
+                    'timestamp' => $search->timestamp
+                ];
+            }
+        }
+    }
+
+    ?>
+
+    <table>
+        <tr>
+            <th>Crypto</th>
+            <th>Fiat</th>
+            <th>Value</th>
+            <th>Timestamp</th>
+        </tr>
+        <tr>
+            <?php foreach ($table_data as $data): ?>
+                <?php if (!isset($data)) break; ?>
+        <tr>
+            <td><?= htmlspecialchars($data['crypto']) ?></td>
+            <td><?= htmlspecialchars($data['fiat']) ?></td>
+            <td><?= htmlspecialchars($data['value']) ?></td>
+            <td><?= htmlspecialchars($data['timestamp']) ?></td>
+        </tr>
+    <?php endforeach; ?>
+    </tr>
+    </table>
+
+</body>
 
 </html>
