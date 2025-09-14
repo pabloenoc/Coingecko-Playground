@@ -12,6 +12,10 @@ if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date'])
         . $_GET['end_date'];
 }
 
+$price_data = json_decode(file_get_contents("data/bitcoin-price-2025-08-31-to-2025-09-14.log"));
+
+var_dump($price_data->{'prices'}[0]);
+
 ?>
 
 <!DOCTYPE html>
@@ -122,10 +126,10 @@ if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date'])
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['08/31 00:00', '08/31 01:00', '08/31 02:00'],
+                    labels: <?php echo json_encode($price_data->{'prices'}) ?>,
                     datasets: [{
                         label: 'Price by Date (Hourly)',
-                        data: [108781.95, 109321.61, 109453.20],
+                        data: <?php echo json_encode($price_data->{'prices'}) ?>,
                         borderWidth: 1
                     }]
                 },
