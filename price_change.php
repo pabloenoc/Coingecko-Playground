@@ -21,6 +21,7 @@ if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date'])
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Coingecko Playground</title>
 </head>
 
@@ -110,6 +111,35 @@ if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date'])
 
     <?php if (isset($coingecko_api_url)): ?>
         Querying: <code><?= $coingecko_api_url ?></code>
+
+        <div>
+           <canvas id="myChart"></canvas> 
+        </div>
+
+        <script>
+            const ctx = document.getElementById('myChart');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['08/31 00:00', '08/31 01:00', '08/31 02:00'],
+                    datasets: [{
+                        label: 'Price by Date (Hourly)',
+                        data: [108781.95, 109321.61, 109453.20],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        </script>
+
+
     <?php endif; ?>
 
 </body>
