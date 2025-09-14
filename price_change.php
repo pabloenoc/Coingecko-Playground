@@ -1,3 +1,19 @@
+<?php
+
+if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date']) && isset($_GET['end_date'])) {
+
+    $coingecko_api_url = "https://api.coingecko.com/api/v3/coins/"
+        . $_GET['crypto']
+        . "/market_chart/range?vs_currency="
+        . $_GET['fiat']
+        . "&from="
+        . $_GET['start_date']
+        . "&to="
+        . $_GET['end_date'];
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -58,7 +74,43 @@
 
     <h1><a href="/" style="color:inherit; text-decoration: none;">Coingecko Price Change</a></h1>
 
+    <form action="price_change.php" method="GET">
+        <label for="crypto">Select crypto:</label>
 
+        <select name="crypto" id="">
+            <option value="">Please select an option</option>
+            <option value="bitcoin">Bitcoin</option>
+            <option value="ethereum">Ethereum</option>
+            <option value="litecoin">Litecoin</option>
+            <option value="bitcoin-cash">Bitcoin Cash</option>
+        </select>
+
+        <label for="fiat">Select fiat:</label>
+
+        <select name="fiat" id="">
+            <option value="">Please select an option</option>
+            <option value="usd">US Dollar</option>
+            <option value="eur">Euro</option>
+            <option value="gbp">British Pound</option>
+            <option value="jpy">Japanese Yen</option>
+            <option value="aud">Australian Dollar</option>
+        </select>
+
+        <label for="start">Start time:</label>
+
+        <input type="date" name="start_date" value="">
+
+        <label for="start">End time:</label>
+
+        <input type="date" name="end_date" value="<?= date("Y-m-d") ?>">
+
+        <input type="submit" value="OK">
+
+    </form>
+
+    <?php if (isset($coingecko_api_url)): ?>
+        Querying: <code><?= $coingecko_api_url ?></code>
+    <?php endif; ?>
 
 </body>
 
