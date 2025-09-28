@@ -1,19 +1,34 @@
 <?php
 
-if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date']) && isset($_GET['end_date'])) {
-
-    $coingecko_api_url = "https://api.coingecko.com/api/v3/coins/"
-        . $_GET['crypto']
-        . "/market_chart/range?vs_currency="
-        . $_GET['fiat']
-        . "&from="
-        . $_GET['start_date']
-        . "&to="
-        . $_GET['end_date'];
-}
-
+$errors = [];
 $timestamps = [];
 $prices = [];
+
+if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date']) && isset($_GET['end_date'])) {
+
+    // Check submitted values 
+
+    if ($_GET['crypto'] == "") {
+        $errors[] = "You must select a value for crypto";
+    }
+
+    if ($_GET['fiat'] == "") {
+        $errors[] = "You must select a value for fiat";
+    }
+
+    if (empty($errors)) {
+        $coingecko_api_url = "https://api.coingecko.com/api/v3/coins/"
+            . $_GET['crypto']
+            . "/market_chart/range?vs_currency="
+            . $_GET['fiat']
+            . "&from="
+            . $_GET['start_date']
+            . "&to="
+            . $_GET['end_date'];
+    } else {
+        header('HTTP/1.1 422 Unprocessable Content');
+    }
+}
 
 if (isset($coingecko_api_url)) {
     $price_data = json_decode(file_get_contents($coingecko_api_url));
@@ -91,9 +106,19 @@ if (isset($coingecko_api_url)) {
     <h1><a href="/" style="color:inherit; text-decoration: none;">Coingecko Price Change</a></h1>
 
     <form action="price_change.php" method="GET">
+        <?php if (!empty($errors)): ?>
+            <div>
+                <p style="color: red">Please fix the following errors before submitting:</p>
+                <ul>
+                    <?php foreach ($errors as $e): ?>
+                        <li style="color: red"><?= $e ?></li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        <?php endif ?>
         <label for="crypto">Select crypto:</label>
 
-        <select name="crypto" id="">
+        <select name="crypto" id="" required>
             <option value="">Please select an option</option>
             <option value="bitcoin">Bitcoin</option>
             <option value="ethereum">Ethereum</option>
@@ -103,7 +128,7 @@ if (isset($coingecko_api_url)) {
 
         <label for="fiat">Select fiat:</label>
 
-        <select name="fiat" id="">
+        <select name="fiat" id="" required>
             <option value="">Please select an option</option>
             <option value="usd">US Dollar</option>
             <option value="eur">Euro</option>
@@ -114,7 +139,7 @@ if (isset($coingecko_api_url)) {
 
         <label for="start">Start time:</label>
 
-        <input type="date" name="start_date" value="">
+        <input type="date" name="start_date" value="<?= date("Y-m-d") ?>">
 
         <label for="start">End time:</label>
 
