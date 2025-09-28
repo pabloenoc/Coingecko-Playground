@@ -12,9 +12,20 @@ if (isset($_GET['crypto']) && isset($_GET['fiat']) && isset($_GET['start_date'])
         . $_GET['end_date'];
 }
 
-$price_data = json_decode(file_get_contents("data/bitcoin-price-2025-08-31-to-2025-09-14.log"));
+$timestamps = [];
+$prices = [];
 
-var_dump($price_data->{'prices'}[0]);
+if (isset($coingecko_api_url)) {
+    $price_data = json_decode(file_get_contents($coingecko_api_url));
+
+    foreach ($price_data->{'prices'} as $item) {
+        $timestamp_with_microseconds = $item[0];
+        $price = $item[1];
+        $timestamp = intval($timestamp_with_microseconds / 1000);
+        $timestamps[] = $timestamp;
+        $prices[] = $price;
+    }
+}
 
 ?>
 
@@ -117,7 +128,7 @@ var_dump($price_data->{'prices'}[0]);
         Querying: <code><?= $coingecko_api_url ?></code>
 
         <div>
-           <canvas id="myChart"></canvas> 
+            <canvas id="myChart"></canvas>
         </div>
 
         <script>
@@ -126,10 +137,14 @@ var_dump($price_data->{'prices'}[0]);
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: <?php echo json_encode($price_data->{'prices'}) ?>,
+                    labels: [<?php foreach ($timestamps as $ts) {
+                                    echo date("'Y-m-d H:i'", $ts) . ", ";
+                                } ?>],
                     datasets: [{
                         label: 'Price by Date (Hourly)',
-                        data: <?php echo json_encode($price_data->{'prices'}) ?>,
+                        data: [<?php foreach ($prices as $p) {
+                                    echo $p . ", ";
+                                } ?>],
                         borderWidth: 1
                     }]
                 },
