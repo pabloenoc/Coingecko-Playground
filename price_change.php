@@ -140,8 +140,7 @@ if (isset($coingecko_api_url)) {
         <select name="fiat" id="fiat" required>
         <?php endif ?>
 
-            <option value="">Please select an option</option>
-            <option value="usd">US Dollar</option>
+            <option value="usd" selected>US Dollar</option>
             <option value="eur">Euro</option>
             <option value="gbp">British Pound</option>
             <option value="jpy">Japanese Yen</option>
@@ -150,7 +149,7 @@ if (isset($coingecko_api_url)) {
 
         <label for="start_date">Start time:</label>
 
-        <input type="date" name="start_date" id="start_date" value="<?= date("Y-m-d") ?>">
+        <input type="date" name="start_date" id="start_date" value="" required>
 
         <label for="end_date">End time:</label>
 
