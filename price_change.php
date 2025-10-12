@@ -118,7 +118,12 @@ if (isset($coingecko_api_url)) {
         <?php endif ?>
         <label for="crypto">Select crypto:</label>
 
-        <select name="crypto" id="" required>
+        <?php if (!empty($errors)): ?>
+        <select name="crypto" id="crypto" required aria-invalid="true">
+        <?php else: ?>
+        <select name="crypto" id="crypto" required>
+        <?php endif ?>
+        
             <option value="">Please select an option</option>
             <option value="bitcoin">Bitcoin</option>
             <option value="ethereum">Ethereum</option>
@@ -128,7 +133,12 @@ if (isset($coingecko_api_url)) {
 
         <label for="fiat">Select fiat:</label>
 
-        <select name="fiat" id="" required>
+        <?php if (!empty($errors)): ?>
+        <select name="fiat" id="fiat" required aria-invalid="true">
+        <?php else: ?>
+        <select name="fiat" id="fiat" required>
+        <?php endif ?>
+
             <option value="">Please select an option</option>
             <option value="usd">US Dollar</option>
             <option value="eur">Euro</option>
@@ -137,13 +147,13 @@ if (isset($coingecko_api_url)) {
             <option value="aud">Australian Dollar</option>
         </select>
 
-        <label for="start">Start time:</label>
+        <label for="start_date">Start time:</label>
 
-        <input type="date" name="start_date" value="<?= date("Y-m-d") ?>">
+        <input type="date" name="start_date" id="start_date" value="<?= date("Y-m-d") ?>">
 
-        <label for="start">End time:</label>
+        <label for="end_date">End time:</label>
 
-        <input type="date" name="end_date" value="<?= date("Y-m-d") ?>">
+        <input type="date" name="end_date" id="end_date" value="<?= date("Y-m-d") ?>">
 
         <input type="submit" value="OK">
 

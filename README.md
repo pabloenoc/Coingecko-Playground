@@ -2,15 +2,16 @@
 
 This project is a playgroud for the Coingecko API with custom PHP functions such as:
 
-- Price Comparison tool (Cyrpto - Fiat)
+- Price Comparison tool (Crypto - Fiat)
 - Cryptocurrency Search Form
 - Price Change Graph Maker
 
-## TODO
-
-- add aria-invalid to form inputs
 
 ## Changelog
+
+### 2025-10-12
+
+- add aria-invalid to form inputs
 
 ### 2025-09-28
 
