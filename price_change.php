@@ -116,6 +116,7 @@ if (isset($coingecko_api_url)) {
                 </ul>
             </div>
         <?php endif ?>
+
         <label for="crypto">Select crypto:</label>
 
         <?php if (!empty($errors)): ?>
