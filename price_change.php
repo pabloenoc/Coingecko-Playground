@@ -47,13 +47,7 @@ if (isset($coingecko_api_url)) {
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Coingecko Playground</title>
-</head>
+<?php require __DIR__ . "/views/_head.php" ?>
 
 <body class="container">
 
@@ -115,6 +109,8 @@ if (isset($coingecko_api_url)) {
 
     </form>
 
+    <button onclick="localStorage.clear();">Delete localStorage</button> <br>
+
     <?php if (isset($coingecko_api_url)): ?>
         Querying: <code><?= $coingecko_api_url ?></code>
 
@@ -123,30 +119,55 @@ if (isset($coingecko_api_url)) {
         </div>
 
         <script>
+
+            function generateRandomHexColor() {
+                return '#' + Math.floor(Math.random() * 16777215).toString(16);
+            }
+
             const ctx = document.getElementById('myChart');
 
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [<?php foreach ($timestamps as $ts) {
-                                    echo date("'Y-m-d H:i'", $ts) . ", ";
-                                } ?>],
-                    datasets: [{
-                        label: 'Price by Date (Hourly)',
-                        data: [<?php foreach ($prices as $p) {
-                                    echo $p . ", ";
-                                } ?>],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: false
+            const timestamps = [<?php foreach ($timestamps as $ts) echo date("'Y-m-d H:i'", $ts) . ","; ?>];
+            const prices = [<?php foreach ($prices as $p) echo $p . ","; ?>];
+
+            // label looks like: Bitcoin (USD) or Ethereum (USD)
+            // 
+
+            const newDataset = {
+                label: '<?= ucfirst($_GET['crypto']) ?> (<?= strtoupper($_GET['fiat']) ?>)',
+                data: prices,
+                borderColor: generateRandomHexColor()
+            };
+
+            let config;
+
+            if (!localStorage.getItem("chart_config")) {
+                config = {
+                    type: 'line',
+                    data: {
+                        labels: timestamps,
+                        datasets: [newDataset]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: false }
                         }
                     }
+                };
+            } else {
+                config = JSON.parse(localStorage.getItem("chart_config"));
+
+                config.data.labels = timestamps;
+
+                const existing = config.data.datasets.find(ds => ds.label === newDataset.label);
+                if (!existing) {
+                    config.data.datasets.push(newDataset);
                 }
-            });
+            }
+
+            localStorage.setItem("chart_config", JSON.stringify(config));
+
+            new Chart(ctx, config);
         </script>
 
 
