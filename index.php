@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL & ~E_WARNING);
+
 
 date_default_timezone_set('America/Los_Angeles');
 
