@@ -6,12 +6,20 @@ This project is a playgroud for the Coingecko API with custom PHP functions such
 - Cryptocurrency Search Form
 - Price Change Graph Maker
 
+## TODO
+
+- consider the database option for open exchange rates API
+- Two superimposed lines on chart
+- Find good API for historical forex rates
+
 
 ## Changelog
 
 ### 2025-10-12
 
 - add aria-invalid to form inputs
+- View partials
+- 
 
 ### 2025-09-28
 

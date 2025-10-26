@@ -1,0 +1,1 @@
+localStorage.setItem("message", "Hello world!");
