@@ -18,12 +18,7 @@ if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    <title>Coingecko Playground</title>
-</head>
+<?php require __DIR__ . "/views/_head.php" ?>
 
 <body class="container">
 
