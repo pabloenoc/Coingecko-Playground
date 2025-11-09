@@ -75,8 +75,7 @@ if (isset($coingecko_api_url)) {
         <select name="crypto" id="crypto" required>
         <?php endif ?>
         
-            <option value="">Please select an option</option>
-            <option value="bitcoin">Bitcoin</option>
+            <option value="bitcoin" selected>Bitcoin</option>
             <option value="ethereum">Ethereum</option>
             <option value="litecoin">Litecoin</option>
             <option value="bitcoin-cash">Bitcoin Cash</option>
@@ -119,36 +118,29 @@ if (isset($coingecko_api_url)) {
         </div>
 
         <script>
-
-            function generateRandomHexColor() {
-                return '#' + Math.floor(Math.random() * 16777215).toString(16);
-            }
-
+            
             const ctx = document.getElementById('myChart');
 
             const timestamps = [<?php foreach ($timestamps as $ts) echo date("'Y-m-d H:i'", $ts) . ","; ?>];
             const prices = [<?php foreach ($prices as $p) echo $p . ","; ?>];
-
-            // label looks like: Bitcoin (USD) or Ethereum (USD)
-            // 
+            
+            // the label below looks like "Bitcoin (USD) etc"
 
             const newDataset = {
                 label: '<?= ucfirst($_GET['crypto']) ?> (<?= strtoupper($_GET['fiat']) ?>)',
-                data: prices,
-                borderColor: generateRandomHexColor()
+                data: prices
             };
 
             let config;
 
             if (!localStorage.getItem("chart_config")) {
                 config = {
-                    type: 'line',
+                    type: 'bar',
                     data: {
                         labels: timestamps,
                         datasets: [newDataset]
                     },
                     options: {
-                        responsive: true,
                         scales: {
                             y: { beginAtZero: false }
                         }
