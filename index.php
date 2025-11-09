@@ -70,7 +70,15 @@ if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
     $searches_arr = explode("\n", $searches_file_contents);
 
     foreach ($searches_arr as $search) {
-        array_push($searches, json_decode($search));
+    	if (!empty($search)) {
+    		$decoded = json_decode($search);
+    		if ($decoded !== null) {
+    			array_push($searches, json_decode($search));
+    		} else {
+    			echo "Error decoding JSON for entry: " . $search;
+    		}
+    	}
+        
     }
 
     foreach ($searches as $search) {
