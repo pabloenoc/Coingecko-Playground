@@ -43,5 +43,5 @@
         Price Change
     </a>
 
-    <a href="/api_testing.php">API Testing (temp)</a>
+    <a href="/api_test.php">API Testing (temp)</a>
 </nav>

@@ -172,7 +172,7 @@ if (isset($coingecko_api_url)) {
 
     <?php endif; ?>
     
-    <?php require "views/_footer.php" ?>
+    <?php require __DIR__ . "views/_footer.php" ?>
 
 </body>
 

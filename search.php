@@ -29,7 +29,7 @@ if (isset($_GET["query"])) {
         <p><code><?= htmlspecialchars($result); ?></code></p>
     <?php endif; ?>
     
-    <?php require "views/_footer.php" ?>
+    <?php require __DIR__ . "views/_footer.php" ?>
 
 </body>
 
