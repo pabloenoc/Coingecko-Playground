@@ -15,6 +15,11 @@ This project is a playgroud for the Coingecko API with custom PHP functions such
 
 ## Changelog
 
+## 2025-11-23
+
+- Display 2 charts
+- Fix header chart.js dependency
+
 ### 2025-10-12
 
 - add aria-invalid to form inputs

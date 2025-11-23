@@ -117,6 +117,8 @@ if (isset($_GET["crypto"]) && isset($_GET["fiat"])) {
     <?php endforeach; ?>
     </tr>
     </table>
+    
+    <?php require "views/_footer.php" ?>
 
 </body>
 

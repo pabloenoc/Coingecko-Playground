@@ -28,6 +28,8 @@ if (isset($_GET["query"])) {
     <?php if (isset($result)) : ?>
         <p><code><?= htmlspecialchars($result); ?></code></p>
     <?php endif; ?>
+    
+    <?php require "views/_footer.php" ?>
 
 </body>
 
